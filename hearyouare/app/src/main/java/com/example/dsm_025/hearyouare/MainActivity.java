@@ -1,5 +1,7 @@
 package com.example.dsm_025.hearyouare;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+
+        SharedPreferences preference = getSharedPreferences("a", MODE_PRIVATE);
+        int firstviewshow = preference.getInt("First", 0);
+
+        if(firstviewshow != 1){
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
     }
     @Override

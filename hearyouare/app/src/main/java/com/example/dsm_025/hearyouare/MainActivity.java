@@ -1,5 +1,6 @@
 package com.example.dsm_025.hearyouare;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    MainFragment mainFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
+        mainFragment = new MainFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, mainFragment)
+                .commit();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

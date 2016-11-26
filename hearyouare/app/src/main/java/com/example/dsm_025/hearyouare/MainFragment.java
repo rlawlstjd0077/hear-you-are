@@ -1,9 +1,9 @@
 package com.example.dsm_025.hearyouare;
 
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.Space;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +30,13 @@ public class MainFragment extends Fragment {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"버튼을 눌렀습니다.",Toast.LENGTH_LONG).show();
-                SpeakerScanFragment speakerScanFragment = SpeakerScanFragment.newInstance();
-                speakerScanFragment.show(((AppCompatActivity)getContext()).getSupportFragmentManager(), null);
+                WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
+                if(wifiManager.isWifiEnabled()) {
+                    SpeakerScanDialogFragment speakerScanDialogFragment = SpeakerScanDialogFragment.newInstance();
+                    speakerScanDialogFragment.show(((AppCompatActivity) getContext()).getSupportFragmentManager(), null);
+                }else{
+                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return v;

@@ -1,12 +1,10 @@
 package com.example.dsm_025.hearyouare;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +12,15 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by 김진성 on 2016-11-26.
  */
-public class SpeakerScanFragment extends DialogFragment {
+public class SpeakerScanDialogFragment extends DialogFragment {
 
     public Context mContext;
-    public static SpeakerScanFragment newInstance(){
+    public static SpeakerScanDialogFragment newInstance(){
 
-        SpeakerScanFragment fragment = new SpeakerScanFragment();
+        SpeakerScanDialogFragment fragment = new SpeakerScanDialogFragment();
 
         return fragment;
     }

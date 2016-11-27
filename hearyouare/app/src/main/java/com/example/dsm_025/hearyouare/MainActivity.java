@@ -14,6 +14,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     MainFragment mainFragment;
+    ProfileFragment profileFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +26,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
-        mainFragment = new MainFragment();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.container, mainFragment)
-                .commit();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -41,6 +36,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+        switch (position) {
+            case 0:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, new MainFragment())
+                        .commit();
+                        break;
+            case 1:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, new ProfileFragment())
+                        .commit();
+                break;
+        }
     }
 
     @Override

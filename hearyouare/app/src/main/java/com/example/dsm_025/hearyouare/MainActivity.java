@@ -1,6 +1,9 @@
 package com.example.dsm_025.hearyouare;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +11,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Toast;
+
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
+import java.security.Permission;
+import java.security.Permissions;
+import java.util.ArrayList;
+import java.util.jar.Manifest;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
@@ -25,7 +36,37 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+        mNavigationDrawerFragment.closeDrawer();
 
+<<<<<<< HEAD
+=======
+        mainFragment = new MainFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, mainFragment)
+                .commit();
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+        new TedPermission(this)
+                .setPermissionListener(permissionListener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                .check();
+
+
+>>>>>>> wifi-scanning
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,4 +100,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
+    public void allowPerfmission(){
+
+    }
+
 }

@@ -27,11 +27,10 @@ public class ScanningWifi {
     private ConnectivityManager connManager;
     private List<ScanResult> scanResult;
     private SimpleAdapter adapter;
-    private ArrayList<HashMap<String,String>> list;
     private Context mContext;
     private int scanCount = 0;
-    String result = "";
-    StringBuilder sb = new StringBuilder();
+    private StringBuilder sb = new StringBuilder();
+    public static ArrayList<String> datas;
 
     private BroadcastReceiver mWifiScanReceiver = new BroadcastReceiver() {
         @Override
@@ -47,9 +46,10 @@ public class ScanningWifi {
     };
     public void getWIFIScanResult(){
         scanResult = wifiManager.getScanResults();
+        datas = new ArrayList<>();
         for (int i = 0; i < scanResult.size(); i++) {
             ScanResult result = scanResult.get(i);
-            Log.d(TAG, ((i + 1) + ". SSID : " + result.SSID.toString() + "\t\t RSSI : " + result.level + " dBm\n"));
+            datas.add(i, result.SSID);
         }
     }
     public void initWIFIScan(){
@@ -58,7 +58,6 @@ public class ScanningWifi {
         final IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         mContext.registerReceiver(mWifiScanReceiver, filter);
-        wifiManager.startScan();
     }
 
 
@@ -67,27 +66,13 @@ public class ScanningWifi {
         initWIFIScan();
     }
 
-    public void getWifi(){
-        list = new ArrayList<HashMap<String, String>>();
-        wifiManager = (WifiManager)mContext.getSystemService(Context.WIFI_SERVICE);
-        connManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        if(wifiManager.isWifiEnabled()){
-        }else{
-            Toast.makeText(mContext, "wifi 가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-
-        mContext.registerReceiver(mWifiScanReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-        wifiManager.startScan();
-    }
     public void startScan(){
         wifiManager.startScan();
     }
     public void stopScan(){
         mContext.unregisterReceiver(mWifiScanReceiver);
+    }
+    public ArrayList<String> getDatas(){
+        return datas;
     }
 }

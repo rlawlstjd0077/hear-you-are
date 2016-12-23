@@ -5,10 +5,21 @@ package com.example.dsm_025.hearyouare;
  */
 
 public class WifiData {
-    String ssid;
-    int level;
-    public WifiData(String s, int l){
-        ssid = s;
-        level = l;
+    private String ssid;
+    private int level;
+
+
+
+    public void setSSID(String ssid){
+        this.ssid = ssid;
+    }
+    public void setLevel(int level){
+        this.level = level;
+    }
+    public String getSSID(){
+        return this.ssid;
+    }
+    public int getLevel(){
+        return this.level;
     }
 }

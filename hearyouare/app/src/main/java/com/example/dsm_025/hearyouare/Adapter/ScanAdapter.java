@@ -53,11 +53,11 @@ public class ScanAdapter extends BaseAdapter{
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             convertView.setLayoutParams(layoutParams);
         }
-        TextView ssid = (TextView)convertView.findViewById(R.id.ssid);
-        ssid.setText(list.get(position).getSSID());
-
-        TextView level = (TextView)convertView.findViewById(R.id.level);
-        level.setText(list.get(position).getLevel() + "");
+//        TextView ssid = (TextView)convertView.findViewById(R.id.ssid);
+//        ssid.setText(list.get(position).getSSID());
+//
+//        TextView level = (TextView)convertView.findViewById(R.id.level);
+//        level.setText(list.get(position).getLevel() + "");
 
         return convertView;
     }

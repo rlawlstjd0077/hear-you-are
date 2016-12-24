@@ -43,22 +43,23 @@ public class MainFragment extends Fragment {
         final View v = inflater.inflate(R.layout.fragment_main, container, false);
         mContent = v.getContext();
         ImageView iv;
-        sl = new SocketListener(getActivity(), mainHandler);
         iv = (ImageView)v.findViewById(R.id.speaker);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
                 if(wifiManager.isWifiEnabled()) {
-//                    Connector connector = new Connector(getContext());
-//                    try {
-//                        connector.execute().get();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
+                    Connector connector = new Connector(getContext());
+                    sl = new SocketListener(getActivity(), mainHandler);
+
+                    try {
+                        connector.execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), ReserveListActivity.class);
                     startActivity(intent);
                 }else{

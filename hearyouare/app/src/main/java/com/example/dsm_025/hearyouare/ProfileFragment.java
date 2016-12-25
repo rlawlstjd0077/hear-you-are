@@ -1,7 +1,6 @@
 package com.example.dsm_025.hearyouare;
 
 
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,7 +26,7 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fargment_profile, container, false);
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ImageView iv;
         iv = (ImageView)v.findViewById(R.id.profile_image);
         iv.setOnClickListener(new View.OnClickListener() {

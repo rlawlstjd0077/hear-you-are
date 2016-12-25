@@ -23,7 +23,7 @@ public class SocketManager {
                 @Override
                 public void run() {
                     try {
-                        socket.connect(new InetSocketAddress(HOST, PORT));
+                        socket.connect(new InetSocketAddress(HOST, PORT), 1000);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

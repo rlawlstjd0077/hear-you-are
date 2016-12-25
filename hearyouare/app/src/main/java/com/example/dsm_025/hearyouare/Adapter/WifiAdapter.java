@@ -3,14 +3,17 @@ package com.example.dsm_025.hearyouare.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.WifiData;
+import com.example.dsm_025.hearyouare.dialog.InputWifiPasswordDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +34,6 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
         if (list == null) this.list = new ArrayList<>();
         else this.list = list;
 
-
-
     }
 
     @Override
@@ -44,7 +45,26 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(final ViewHolder holder,final int position) {
+        final RelativeLayout hClickLayout = holder.mClickLayout;
 
+        holder.mSSIDTV.setText(list.get(position).getSSID());
+        holder.mLevelTV.setText(Integer.toString(list.get(position).getLevel()));
+
+        hClickLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputWifiPasswordDialogFragment dialog = InputWifiPasswordDialogFragment.newInstance(new InputWifiPasswordDialogFragment.PasswordInputListener() {
+                    @Override
+                    public void onPassWordInputComplete(String name) {
+                        if(name != null){
+
+                        }else{
+
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -57,7 +77,6 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
         return list.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public final RelativeLayout mClickLayout;
@@ -67,7 +86,7 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
         public ViewHolder(View itemView) {
             super(itemView);
 
-            mClickLayout = (RelativeLayout) itemView.findViewById(R.id.layout_wifi);
+            mClickLayout = (RelativeLayout) itemView.findViewById(R.id.layout_wifi_click);
             mSSIDTV = (TextView) itemView.findViewById(R.id.tv_ssid);
             mLevelTV = (TextView) itemView.findViewById(R.id.tv_level);
         }
@@ -78,13 +97,6 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
-        final RelativeLayout hClickLayout = holder.mClickLayout;
-
-        hClickLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        super.onBindViewHolder(holder, position, payloads);
     }
 }

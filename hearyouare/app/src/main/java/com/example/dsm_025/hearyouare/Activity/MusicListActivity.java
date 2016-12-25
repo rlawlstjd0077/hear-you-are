@@ -44,7 +44,13 @@ public class MusicListActivity extends AppCompatActivity{
         MusicAdapter musicAdapter = new MusicAdapter(this, list);
         listView.setAdapter(musicAdapter);
 
-        sl = new SocketListener(getApplicationContext(), mainHandler);
+        try {
+            sl = new SocketListener(getApplicationContext(), mainHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -103,12 +109,14 @@ public class MusicListActivity extends AppCompatActivity{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            sl = new SocketListener(getApplicationContext(), mainHandler);
-            sl.setMsg("/MUSIC_INFO:{\"album\": \"\", \"playtime\": \"\", \"singer\": \"\", \"name\": \"\"}");
-            sl.start();
             try {
+                sl = new SocketListener(getApplicationContext(), mainHandler);
+                sl.setMsg("/MUSIC_INFO:{\"album\": \"\", \"playtime\": \"\", \"singer\": \"\", \"name\": \"\"}");
+                sl.start();
                 sl.join();
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             musicDto = list.get(position);

@@ -22,18 +22,12 @@ public class SocketListener extends Thread {
 
     Context context;
 
-    public SocketListener(Context context, Handler handler) {
+    public SocketListener(Context context, Handler handler) throws IOException, InterruptedException {
         this.mHandler = handler;
         this.context = context;
 
-        try {
-            im = SocketManager.getSocket().getInputStream();
-            br = new BufferedReader(new InputStreamReader(im));
-        } catch (IOException e) {
-            Log.e("SocketListener", e.getMessage());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+         im = SocketManager.getSocket().getInputStream();
+         br = new BufferedReader(new InputStreamReader(im));
     }
 
     public void setMsg(String msg){

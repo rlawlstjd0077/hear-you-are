@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class MainFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_main, container, false);
         mContent = v.getContext();
         ImageView iv;
@@ -47,21 +48,24 @@ public class MainFragment extends Fragment {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("onClick: ", "clicked");
                 WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
                 if(wifiManager.isWifiEnabled()) {
-                    Connector connector = new Connector(getContext());
-                    sl = new SocketListener(getActivity(), mainHandler);
+//                    Connector connector = new Connector(getContext());
+//                    try {
+//                        sl = new SocketListener(getActivity(), mainHandler);
+//                        connector.execute().get();
+//                    } catch (IOException e) {
+//                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    } catch (ExecutionException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
 
-                    try {
-                        connector.execute().get();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getActivity(), ReserveListActivity.class);
-                    startActivity(intent);
+                    getFragmentManager().beginTransaction().replace(R.id.container, new WifiListFragment()).commit();
                 }else{
                     Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
                 }

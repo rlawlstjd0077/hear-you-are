@@ -15,6 +15,7 @@ import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.Utill.SocketListener;
 import com.example.dsm_025.hearyouare.Utill.SocketManager;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -32,7 +33,13 @@ public class ReserveListActivity extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_list);
-        sl = new SocketListener(this, mainHandler);
+        try {
+            sl = new SocketListener(this, mainHandler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

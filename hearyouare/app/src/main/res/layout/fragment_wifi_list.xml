@@ -28,7 +28,7 @@
 
     </RelativeLayout>
 
-    <com.seongsoft.phoword.component.MyRecyclerView
+    <com.example.dsm_025.hearyouare.Component.MyRecyclerView
         android:id="@+id/recyclerview_wifi"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

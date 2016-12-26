@@ -1,10 +1,13 @@
 package com.example.dsm_025.hearyouare;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,22 +23,26 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        ImageView iv;
-        iv = (ImageView)v.findViewById(R.id.profile_image);
-        iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(),"프로필 사진을 변경하십시오.",Toast.LENGTH_LONG).show();
-            }
-        });
-
+        setHasOptionsMenu(true);
         return v;
     }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.menu_search:
+                Intent intent = new Intent(ProfileFragment.this.getActivity(), NicknameActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
 }

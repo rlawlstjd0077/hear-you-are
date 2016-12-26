@@ -9,17 +9,6 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp">
-            <ImageView
-                android:id="@+id/background"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/background"
-                android:gravity="left|top" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -65,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="110dp">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
@@ -95,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="110dp">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
@@ -123,15 +112,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="134dp"
-        android:src="@drawable/user"
-        app:civ_border_width="0dp"
-        app:civ_border_color="#FF000000"/>
 </RelativeLayout>

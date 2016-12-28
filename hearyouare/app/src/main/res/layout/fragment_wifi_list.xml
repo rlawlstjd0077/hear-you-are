@@ -11,19 +11,19 @@
 
         <ProgressBar
             android:alpha="0.2"
-            android:id="@+id/progresscircle"
+            android:id="@+id/progresscircle_wifi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"/>
 
         <TextView
             android:alpha="0.2"
-            android:layout_below="@id/progresscircle"
+            android:layout_below="@id/progresscircle_wifi"
             android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
-            android:text="@string/action_progress"
+            android:text="@string/action_progress_wifi"
             android:textColor="@android:color/black" />
 
     </RelativeLayout>

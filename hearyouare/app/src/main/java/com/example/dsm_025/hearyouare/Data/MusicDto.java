@@ -5,6 +5,9 @@ package com.example.dsm_025.hearyouare.Data;
  */
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -14,6 +17,8 @@ public class MusicDto implements Serializable {
     private String title;
     private String artist;
     private String path;
+    private String album;
+    private int playTime;
 
     public MusicDto() {
     }
@@ -37,15 +42,19 @@ public class MusicDto implements Serializable {
         return albumId;
     }
 
-    public void setAlbumId(String albumId) {
-        this.albumId = albumId;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public String getPath() {return path;}
+
+    public String getAlbum(){return album;}
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public int getPlayTime(){return playTime;}
     @Override
     public String toString() {
         return "MusicDto{" +
@@ -56,12 +65,12 @@ public class MusicDto implements Serializable {
                 '}';
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAlbumId(String albumId) {
+        this.albumId = albumId;
     }
 
-    public String getArtist() {
-        return artist;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setArtist(String artist) {
@@ -69,5 +78,35 @@ public class MusicDto implements Serializable {
     }
 
     public void setPath(String path){this.path = path;}
-}
 
+    public void setAlbum(String albeum){this.album = albeum;}
+
+    public void setPlayTime(int time){
+        this.playTime = time;
+    }
+
+    public String jsonBinder() {
+        JSONObject musicData = new JSONObject();
+        try {
+            musicData.put("song", title);
+            musicData.put("artist", artist);
+            musicData.put("album", album);
+            musicData.put("playtime", playTime);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return musicData.toString();
+    }
+
+    public void jsonParser(String jsonData){
+        try {
+            JSONObject musicData = new JSONObject(jsonData);
+            this.title = (musicData.get("song").toString());
+            this.album = (musicData.get("album").toString());
+            this.artist = (musicData.get("artist").toString());
+            this.playTime = (Integer.parseInt(musicData.get("playtime").toString()));
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+}

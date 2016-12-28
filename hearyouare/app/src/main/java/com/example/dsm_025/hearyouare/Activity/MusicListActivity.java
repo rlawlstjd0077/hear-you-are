@@ -1,6 +1,9 @@
 package com.example.dsm_025.hearyouare.Activity;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +20,15 @@ import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.Utill.SocketListener;
 import com.example.dsm_025.hearyouare.Utill.SocketManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -37,7 +45,7 @@ public class MusicListActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reserve_list);
+        setContentView(R.layout.activity_music_list);
         getMusicList();
 
         listView = (ListView)findViewById(R.id.list_view);
@@ -73,6 +81,7 @@ public class MusicListActivity extends AppCompatActivity{
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.ALBUM_ID,
                 MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.ARTIST,
                 MediaStore.Audio.Media.DATA
         };
@@ -81,10 +90,10 @@ public class MusicListActivity extends AppCompatActivity{
                 projection, null, null, null);
 
         while(cursor.moveToNext()){
-
             MusicDto musicDto = new MusicDto();
             musicDto.setPath(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA)));
             musicDto.setId(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID)));
+            musicDto.setAlbum(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)));
             musicDto.setAlbumId(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
             musicDto.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
             musicDto.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
@@ -111,7 +120,7 @@ public class MusicListActivity extends AppCompatActivity{
             }
             try {
                 sl = new SocketListener(getApplicationContext(), mainHandler);
-                sl.setMsg("/MUSIC_INFO:{\"album\": \"\", \"playtime\": \"\", \"singer\": \"\", \"name\": \"\"}");
+                sl.setMsg(list.get(position).jsonBinder());
                 sl.start();
                 sl.join();
             } catch (InterruptedException e) {
@@ -120,20 +129,28 @@ public class MusicListActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
             musicDto = list.get(position);
+            Bitmap bitmap = BitmapFactory.decodeFile(getCoverArtPath(Long.parseLong(musicDto.getAlbumId()),getApplication()));
+            byte[] image = bitmapToByteArray(bitmap);
             FileInputStream fileInputStream = null;
-            File file = new File(musicDto.getPath());
-            byte[] bytes = new byte[(int)file.length()];
             try{
-                fileInputStream = new FileInputStream(file);
-                fileInputStream.read(bytes);
-                fileInputStream.close();
-            } catch (FileNotFoundException e) {
+                SocketManager.sendFile(image);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            try {
-                SocketManager.sendFile(bytes);
+            File file = new File(musicDto.getPath());
+            byte[] bytes = new byte[1024];
+            try{
+                fileInputStream = new FileInputStream(file);
+                int cnt = 0;
+                while(cnt != -1) {
+                    cnt = fileInputStream.read(bytes, 0, 1024);
+                    SocketManager.sendFile(bytes);
+                }
+                fileInputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -142,4 +159,28 @@ public class MusicListActivity extends AppCompatActivity{
             return null;
         }
     }
+    private static String getCoverArtPath(long albumId, Context context) {
+
+        Cursor albumCursor = context.getContentResolver().query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Audio.Albums.ALBUM_ART},
+                MediaStore.Audio.Albums._ID + " = ?",
+                new String[]{Long.toString(albumId)},
+                null
+        );
+        boolean queryResult = albumCursor.moveToFirst();
+        String result = null;
+        if (queryResult) {
+            result = albumCursor.getString(0);
+        }
+        albumCursor.close();
+        return result;
+    }
+    public byte[] bitmapToByteArray( Bitmap $bitmap ) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
+        $bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
+        byte[] byteArray = stream.toByteArray() ;
+        return byteArray ;
+    }
+
 }

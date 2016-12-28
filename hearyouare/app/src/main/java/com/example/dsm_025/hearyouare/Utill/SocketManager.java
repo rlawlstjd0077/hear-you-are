@@ -9,7 +9,7 @@ import java.net.Socket;
  */
 
 public class SocketManager {
-    public final static String HOST = "10.42.0.139";
+    public final static String HOST = "192.168.75.1";
     public static int PORT = 8801;
 
     private static Socket socket;
@@ -23,7 +23,7 @@ public class SocketManager {
                 @Override
                 public void run() {
                     try {
-                        socket.connect(new InetSocketAddress(HOST, PORT), 1000);
+                        socket.connect(new InetSocketAddress(HOST, PORT), 10000);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -42,7 +42,9 @@ public class SocketManager {
         getSocket().getOutputStream().write((msg + "\n").getBytes());
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
-        getSocket().getOutputStream().write((file + file.toString()).getBytes());
-        getSocket().getOutputStream().flush();
+        while(file != null) {
+            getSocket().getOutputStream().write(file);
+            getSocket().getOutputStream().flush();
+        }
     }
 }

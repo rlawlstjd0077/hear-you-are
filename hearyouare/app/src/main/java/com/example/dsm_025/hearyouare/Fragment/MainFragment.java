@@ -51,21 +51,23 @@ public class MainFragment extends Fragment {
                 Log.d("onClick: ", "clicked");
                 WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
                 if(wifiManager.isWifiEnabled()) {
-//                    Connector connector = new Connector(getContext());
-//                    try {
-//                        sl = new SocketListener(getActivity(), mainHandler);
-//                        connector.execute().get();
-//                    } catch (IOException e) {
-//                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
+                    Connector connector = new Connector(getContext());
+                    try {
+                        sl = new SocketListener(getActivity(), mainHandler);
+                        connector.execute().get();
+                    } catch (IOException e) {
+                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
 
-                    getFragmentManager().beginTransaction().replace(R.id.container, new WifiListFragment()).commit();
+                    Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+                    startActivity(intent);
+//                    getFragmentManager().beginTransaction().replace(R.id.container, new WifiListFragment()).commit();
                 }else{
                     Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -112,7 +114,7 @@ public class MainFragment extends Fragment {
             WifiManager mng = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
             WifiInfo info = mng.getConnectionInfo();
             String mac = info.getMacAddress();
-            sl.setMsg("/REGISTER_NICKNAME:JinSeong:dasdasdasdasas");
+            sl.setMsg("/REGISTER_NICKNAME:JinSeong:" + mac);
             sl.start();
             try {
                 sl.join();

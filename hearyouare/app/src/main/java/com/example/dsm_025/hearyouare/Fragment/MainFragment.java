@@ -50,27 +50,29 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("onClick: ", "clicked");
                 WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
-                if(wifiManager.isWifiEnabled()) {
-                    Connector connector = new Connector(getContext());
-                    try {
-                        sl = new SocketListener(getActivity(), mainHandler);
-                        connector.execute().get();
-                    } catch (IOException e) {
-                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
-                        return;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
-                    startActivity(intent);
-//                    getFragmentManager().beginTransaction().replace(R.id.container, new WifiListFragment()).commit();
-                }else{
-                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
-                }
+//                if(wifiManager.isWifiEnabled()) {
+//                    Connector connector = new Connector(getContext());
+//                    try {
+//                        sl = new SocketListener(getActivity(), mainHandler);
+//                        connector.execute().get();
+//                    } catch (IOException e) {
+//                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    } catch (ExecutionException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
+//
+//                    Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+//                    startActivity(intent);
+////                    getFragmentManager().beginTransaction().replace(R.id.container, new WifiListFragment()).commit();
+//                }else{
+//                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
+//                }
+                Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+                startActivity(intent);
             }
         });
         return v;

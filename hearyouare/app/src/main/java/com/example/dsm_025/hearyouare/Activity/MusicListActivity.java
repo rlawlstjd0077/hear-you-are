@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -63,20 +65,19 @@ public class MusicListActivity extends AppCompatActivity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                FileSender sender = new FileSender(position, list);
-                try {
-                    sender.execute().get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+//                FileSender sender = new FileSender(position, list);
+//                try {
+//                    sender.execute().get();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }
     public void getMusicList(){
         list = new ArrayList<MusicDto>();
-
         String[] projection = {MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media._ID,
                 MediaStore.Audio.Media.ALBUM_ID,
@@ -131,8 +132,17 @@ public class MusicListActivity extends AppCompatActivity{
             musicDto = list.get(position);
             Bitmap bitmap = BitmapFactory.decodeFile(getCoverArtPath(Long.parseLong(musicDto.getAlbumId()),getApplication()));
             byte[] image = bitmapToByteArray(bitmap);
+            byte[] copyarray;
             FileInputStream fileInputStream = null;
             try{
+                int i;
+                for(i = 0; i < image.length / 1024; i++){
+                    copyarray = new byte[1024];
+                    System.arraycopy(image, i*1024, copyarray, 0, 1024);
+                    //copyarray를 보내준다.
+                }
+                copyarray = new byte[1024];
+                System.arraycopy(image, i*1024, copyarray, 0, image.length - i*1024);
                 SocketManager.sendFile(image);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -141,11 +151,16 @@ public class MusicListActivity extends AppCompatActivity{
             }
             File file = new File(musicDto.getPath());
             byte[] bytes = new byte[1024];
+            int len = 0;
+            int data = 0;
             try{
                 fileInputStream = new FileInputStream(file);
-                int cnt = 0;
-                while(cnt != -1) {
-                    cnt = fileInputStream.read(bytes, 0, 1024);
+                while((len = fileInputStream.read(bytes))>0){
+                    data++;
+                }
+
+                for(;data > 0; data--) {
+                    fileInputStream.read(bytes);
                     SocketManager.sendFile(bytes);
                 }
                 fileInputStream.close();

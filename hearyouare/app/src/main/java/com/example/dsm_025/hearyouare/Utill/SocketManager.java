@@ -43,7 +43,7 @@ public class SocketManager {
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
         while(file != null) {
-            getSocket().getOutputStream().write(file);
+            getSocket().getOutputStream().write(file, 0, file.length);
             getSocket().getOutputStream().flush();
         }
     }

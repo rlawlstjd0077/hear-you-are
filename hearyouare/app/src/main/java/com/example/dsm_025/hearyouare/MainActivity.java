@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private NavigationDrawerFragment mNavigationDrawerFragment;
     MainFragment mainFragment;
     ProfileFragment profileFragment;
+    final int REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +39,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mToolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
 
+        deleteDatabase("userinfo.db");
+        final DBHelper dbHelper = new DBHelper(getApplicationContext(),"userinfo.db",null,1);
         SharedPreferences preference = getSharedPreferences("a",MODE_PRIVATE);
         int firstviewshow = preference.getInt("First",0);
         if (firstviewshow != 1){
             Intent intent = new Intent(MainActivity.this,NicknameActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,REQUEST_CODE);
         }
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -78,6 +83,23 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
 
     }
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        final DBHelper dbHelper = new DBHelper(getApplicationContext(),"userinfo.db",null,1);
+        super.onActivityResult(requestCode,resultCode,data);
+        if(resultCode != RESULT_OK){
+            Toast.makeText(MainActivity.this,"결과가 성공이 아님",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(requestCode == REQUEST_CODE){
+            Toast.makeText(getApplicationContext(), "닉네임 : " + dbHelper.selectNickName(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this,"REQUEST_CODE가 성공이 아님",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);

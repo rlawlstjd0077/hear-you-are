@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -56,9 +57,32 @@ public class MusicListActivity extends ActionBarActivity{
         setContentView(R.layout.activity_music_list);
         mContext = getApplicationContext();
 
+        try {
+            sl = new SocketListener(mContext, mainHandler);
+            sf = new SocketFileListener(mContext, mainHandler);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         getMusicList();
 
         mAdapter = new MusicDataAdapter(mContext, list);
+        mAdapter.setmOnMyItemClicked(new MusicDataAdapter.OnMyItemClicked() {
+            @Override
+            public void onItemClicked(int position) {
+                FileSender sender = new FileSender(position, list, mContext);
+                try {
+                    sender.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         recyclerView = (MyRecyclerView) findViewById(R.id.recyclerview_music_list);
         recyclerView.setHasFixedSize(true);
@@ -109,13 +133,13 @@ public class MusicListActivity extends ActionBarActivity{
             this.mContext = context;
         }
 
-        @Override
-        protected void onPreExecute() {
-            mDlg = new ProgressDialog(mContext);
-            mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mDlg.setMessage("데이터 전송 중입니다.");
-            mDlg.show();
-        }
+//        @Override
+//        protected void onPreExecute() {
+//            mDlg = new ProgressDialog(mContext);
+//            mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//            mDlg.setMessage("데이터 전송 중입니다.");
+//            mDlg.show();
+//        }
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -136,7 +160,9 @@ public class MusicListActivity extends ActionBarActivity{
                 }
                 try {
                     sl = new SocketListener(getApplicationContext(), mainHandler);
-                    sl.setMsg("/MUSIC_INFO:" + list.get(position).jsonBinder());
+                    String msg = list.get(position).jsonBinder();
+                    Log.d("MUSIC_INFO: ", msg);
+                    sl.setMsg("/MUSIC_INFO:" + msg);
                     sl.start();
                     sl.join();
                 } catch (InterruptedException e) {
@@ -225,7 +251,4 @@ public class MusicListActivity extends ActionBarActivity{
         byte[] byteArray = stream.toByteArray() ;
         return byteArray ;
     }
-
-
-
 }

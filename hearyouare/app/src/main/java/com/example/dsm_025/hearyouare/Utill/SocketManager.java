@@ -1,6 +1,9 @@
 package com.example.dsm_025.hearyouare.Utill;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -9,7 +12,7 @@ import java.net.Socket;
  */
 
 public class SocketManager {
-    public final static String HOST = "192.168.75.1";
+    public final static String HOST = "10.42.0.139";
     public static int PORT = 8801;
 
     private static Socket socket;
@@ -42,9 +45,13 @@ public class SocketManager {
         getSocket().getOutputStream().write((msg + "\n").getBytes());
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
+        String message;
+        InputStream im;
+
         while(file != null) {
             getSocket().getOutputStream().write(file, 0, file.length);
             getSocket().getOutputStream().flush();
+            im = SocketManager.getSocket().getInputStream();
         }
     }
 }

@@ -65,14 +65,14 @@ public class MusicListActivity extends AppCompatActivity{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                FileSender sender = new FileSender(position, list);
-//                try {
-//                    sender.execute().get();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                }
+                FileSender sender = new FileSender(position, list);
+                try {
+                    sender.execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -121,7 +121,7 @@ public class MusicListActivity extends AppCompatActivity{
             }
             try {
                 sl = new SocketListener(getApplicationContext(), mainHandler);
-                sl.setMsg(list.get(position).jsonBinder());
+                sl.setMsg("/MUSIC_INFO:" + list.get(position).jsonBinder());
                 sl.start();
                 sl.join();
             } catch (InterruptedException e) {
@@ -139,11 +139,11 @@ public class MusicListActivity extends AppCompatActivity{
                 for(i = 0; i < image.length / 1024; i++){
                     copyarray = new byte[1024];
                     System.arraycopy(image, i*1024, copyarray, 0, 1024);
-                    //copyarray를 보내준다.
+                    SocketManager.sendFile(copyarray);
                 }
                 copyarray = new byte[1024];
                 System.arraycopy(image, i*1024, copyarray, 0, image.length - i*1024);
-                SocketManager.sendFile(image);
+                SocketManager.sendFile(copyarray);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {

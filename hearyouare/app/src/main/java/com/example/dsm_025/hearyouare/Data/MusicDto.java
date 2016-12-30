@@ -88,8 +88,8 @@ public class MusicDto implements Serializable {
     public String jsonBinder() {
         JSONObject musicData = new JSONObject();
         try {
-            musicData.put("song", title);
-            musicData.put("artist", artist);
+            musicData.put("name", title);
+            musicData.put("singer", artist);
             musicData.put("album", album);
             musicData.put("playtime", playTime);
         } catch (JSONException e) {

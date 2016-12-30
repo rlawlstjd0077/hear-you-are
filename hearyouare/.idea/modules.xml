@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../...iml" filepath="$PROJECT_DIR$/../...iml" />
+      <module fileurl="file://D:.iml" filepath="D:.iml" />
+      <module fileurl="file://D:.iml" filepath="D:.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ExpandableButtonMenu/ExpandableButtonMenu.iml" filepath="$PROJECT_DIR$/../ExpandableButtonMenu/ExpandableButtonMenu.iml" />
       <module fileurl="file://C:/androidProject.iml" filepath="C:/androidProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

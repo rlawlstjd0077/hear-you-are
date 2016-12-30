@@ -13,10 +13,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.dsm_025.hearyouare.Adapter.MusicAdapter;
 import com.example.dsm_025.hearyouare.Adapter.MusicDataAdapter;
@@ -49,6 +53,7 @@ public class MusicListActivity extends ActionBarActivity{
     private Context mContext;
     private MyRecyclerView recyclerView;
     private MusicDataAdapter mAdapter;
+    private Toolbar toolbar;
 
 
     @Override
@@ -56,6 +61,9 @@ public class MusicListActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_list);
         mContext = getApplicationContext();
+        toolbar = (Toolbar)findViewById(R.id.music_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         try {
             sl = new SocketListener(mContext, mainHandler);
@@ -94,6 +102,23 @@ public class MusicListActivity extends ActionBarActivity{
 
 
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.musiclist_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        int id = menuItem.getItemId();
+
+        if(id == R.id.music_menu){
+            Toast.makeText(this,"뒤로가기 이벤트",Toast.LENGTH_SHORT).show();
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(menuItem);
+    }
+
     public void getMusicList(){
         list = new ArrayList<MusicDto>();
         String[] projection = {MediaStore.Audio.Media._ID,

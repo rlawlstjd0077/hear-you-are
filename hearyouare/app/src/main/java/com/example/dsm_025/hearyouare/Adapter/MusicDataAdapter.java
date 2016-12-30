@@ -39,6 +39,14 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
         this.list = list;
     }
 
+    public interface OnMyItemClicked{
+        public void onItemClicked(int position);
+    }
+    private OnMyItemClicked mOnMyItemClicked;
+
+    public void setmOnMyItemClicked(OnMyItemClicked onMyItemClicked){
+        this.mOnMyItemClicked = onMyItemClicked;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_listview_item, parent, false);
@@ -46,7 +54,7 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final LinearLayout hClickLayout = holder.mClickLayout;
 
         holder.mSongTV.setText(list.get(position).getTitle());
@@ -57,6 +65,7 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
             @Override
             public void onClick(View v) {
                 Log.d("clicked", "item");
+                mOnMyItemClicked.onItemClicked(position);
             }
         });
     }
@@ -147,4 +156,5 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
         }
         return null;
     }
+
 }

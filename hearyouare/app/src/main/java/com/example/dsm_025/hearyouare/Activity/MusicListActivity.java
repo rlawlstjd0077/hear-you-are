@@ -161,7 +161,7 @@ public class MusicListActivity extends ActionBarActivity{
                 try {
                     sl = new SocketListener(getApplicationContext(), mainHandler);
                     String msg = list.get(position).jsonBinder();
-                    Log.d("MUSIC_INFO: ", msg);
+                    Log.d("MUSIC_I: ", msg);
                     sl.setMsg("/MUSIC_INFO:" + msg);
                     sl.start();
                     sl.join();

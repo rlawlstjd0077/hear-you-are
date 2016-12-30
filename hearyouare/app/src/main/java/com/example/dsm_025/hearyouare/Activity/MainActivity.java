@@ -1,6 +1,14 @@
 package com.example.dsm_025.hearyouare.Activity;
 
+
 import android.Manifest;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,6 +21,7 @@ import com.example.dsm_025.hearyouare.Fragment.MainFragment;
 import com.example.dsm_025.hearyouare.NavigationDrawerCallbacks;
 import com.example.dsm_025.hearyouare.Fragment.NavigationDrawerFragment;
 import com.example.dsm_025.hearyouare.Fragment.ProfileFragment;
+import com.example.dsm_025.hearyouare.NicknameActivity;
 import com.example.dsm_025.hearyouare.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -20,6 +29,7 @@ import com.gun0912.tedpermission.TedPermission;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -31,11 +41,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         setContentView(R.layout.activity_main_topdrawer);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
+
+        SharedPreferences preference = getSharedPreferences("a",MODE_PRIVATE);
+        int firstviewshow = preference.getInt("First",0);
+        if (firstviewshow != 1){
+            Intent intent = new Intent(MainActivity.this,NicknameActivity.class);
+            startActivity(intent);
+        }
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         mNavigationDrawerFragment.closeDrawer();
+
 
         mainFragment = new MainFragment();
 

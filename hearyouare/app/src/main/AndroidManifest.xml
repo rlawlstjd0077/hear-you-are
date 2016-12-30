@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NicknameActivity"></activity>
         <activity android:name=".Activity.ReserveListActivity"></activity>
         <activity android:name=".Activity.MusicListActivity">
         </activity>

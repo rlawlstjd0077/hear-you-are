@@ -33,7 +33,6 @@ public class WifiAdapter extends RecyclerView.Adapter<WifiAdapter.ViewHolder>{
         this.context = context;
         if (list == null) this.list = new ArrayList<>();
         else this.list = list;
-
     }
 
     @Override

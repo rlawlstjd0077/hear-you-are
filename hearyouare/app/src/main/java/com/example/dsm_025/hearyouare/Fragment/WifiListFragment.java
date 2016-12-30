@@ -62,6 +62,7 @@ public class WifiListFragment extends Fragment{
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, 1));
+
         return v;
     }
 

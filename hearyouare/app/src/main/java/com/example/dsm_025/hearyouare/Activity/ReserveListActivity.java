@@ -67,5 +67,4 @@ public class ReserveListActivity extends AppCompatActivity{
             }
         });
     }
-
 }

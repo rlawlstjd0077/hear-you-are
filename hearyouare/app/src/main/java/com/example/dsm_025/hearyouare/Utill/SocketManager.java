@@ -16,6 +16,9 @@ public class SocketManager {
     public static int PORT = 8801;
 
     private static Socket socket;
+    private String message;
+    private InputStream in;
+    private BufferedReader br;
 
     public static Socket getSocket() throws IOException, InterruptedException {
         if(socket == null)
@@ -26,7 +29,7 @@ public class SocketManager {
                 @Override
                 public void run() {
                     try {
-                        socket.connect(new InetSocketAddress(HOST, PORT), 10000);
+                        socket.connect(new InetSocketAddress(HOST, PORT), 5000);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -45,13 +48,9 @@ public class SocketManager {
         getSocket().getOutputStream().write((msg + "\n").getBytes());
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
-        String message;
-        InputStream im;
-
         while(file != null) {
             getSocket().getOutputStream().write(file, 0, file.length);
             getSocket().getOutputStream().flush();
-            im = SocketManager.getSocket().getInputStream();
         }
     }
 }

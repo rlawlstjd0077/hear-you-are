@@ -1,78 +1,95 @@
 package com.example.dsm_025.hearyouare.Adapter;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.dsm_025.hearyouare.Data.MusicDto;
 import com.example.dsm_025.hearyouare.R;
 
+import org.w3c.dom.Text;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dsm_025 on 2016-12-22.
+ * Created by GSD on 2016-12-30.
  */
 
-public class MusicAdapter extends BaseAdapter{
+public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.ViewHolder> {
+    private ArrayList<MusicDto> list;
+    private Context context;
 
-    List<MusicDto> list;
-    LayoutInflater inflater;
-    Activity activity;
-    public MusicAdapter(){
-
-    }
-    public MusicAdapter(Activity activity, List<MusicDto> list) {
+    public MusicDataAdapter(Context context, ArrayList<MusicDto> list){
+        this.context = context;
         this.list = list;
-        this.activity = activity;
-        inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-    @Override
-    public int getCount() {
-        return list.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return position;
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_listview_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final LinearLayout hClickLayout = holder.mClickLayout;
+
+        holder.mSongTV.setText(list.get(position).getTitle());
+        holder.mArtistAlbumTV.setText(list.get(position).getArtist() + " / " + list.get(position).getAlbum());
+        holder.mAlbumImageIV.setImageBitmap(getAlbumImage(context, Integer.parseInt((list.get(position)).getAlbumId()), 170));
+
+        hClickLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("clicked", "item");
+            }
+        });
     }
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.music_listview_item, parent, false);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            convertView.setLayoutParams(layoutParams);
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        public final LinearLayout mClickLayout;
+        public final TextView mSongTV;
+        public final TextView mArtistAlbumTV;
+        public final ImageView mAlbumImageIV;
+
+        public ViewHolder(View itemView){
+            super(itemView);
+
+            mClickLayout = (LinearLayout) itemView.findViewById(R.id.layout_music_list);
+            mSongTV = (TextView) itemView.findViewById(R.id.tv_title);
+            mArtistAlbumTV = (TextView) itemView.findViewById(R.id.tv_artist_album);
+            mAlbumImageIV = (ImageView) itemView.findViewById(R.id.iv_album);
         }
-//
-//        ImageView imageView = (ImageView) convertView.findViewById(R.id.album);
-//        Bitmap albumImage = getAlbumImage(activity, Integer.parseInt((list.get(position)).getAlbumId()), 170);
-//        imageView.setImageBitmap(albumImage);
-//
-//        TextView title = (TextView) convertView.findViewById(R.id.title);
-//        title.setText(list.get(position).getTitle());
-//
-//        TextView artist = (TextView) convertView.findViewById(R.id.artist);
-//        artist.setText(list.get(position).getArtist());
 
-        return convertView;
+    }
+    @Override
+    public void onBindViewHolder(MusicDataAdapter.ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
     }
     private static final BitmapFactory.Options options = new BitmapFactory.Options();
     private static Bitmap getAlbumImage(Context context, int album_id, int MAX_IMAGE_SIZE) {

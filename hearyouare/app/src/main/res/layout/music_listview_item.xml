@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:id="@+id/layout_music_list">
 
     <ImageView
-        android:id="@+id/album"
+        android:id="@+id/iv_album"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY" />
@@ -16,14 +17,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="#000" />
 
         <TextView
-            android:id="@+id/artist"
+            android:id="@+id/tv_artist_album"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"

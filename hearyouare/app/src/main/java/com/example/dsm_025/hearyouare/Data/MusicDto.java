@@ -7,9 +7,7 @@ package com.example.dsm_025.hearyouare.Data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class MusicDto implements Serializable {
     private String id;

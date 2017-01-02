@@ -10,29 +10,25 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public class MusicDto implements Serializable {
-    private String id;
+    private int id;
     private String albumId;
     private String title;
     private String artist;
     private String path;
     private String album;
     private int playTime;
+    private byte[] image;
 
     public MusicDto() {
     }
 
-    public MusicDto(String id, String albumId, String title, String artist) {
-        this.id = id;
-        this.albumId = albumId;
-        this.title = title;
-        this.artist = artist;
-    }
 
-    public String getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -53,6 +49,11 @@ public class MusicDto implements Serializable {
     }
 
     public int getPlayTime(){return playTime;}
+
+    public byte[] getImage(){
+        return this.image;
+    }
+
     @Override
     public String toString() {
         return "MusicDto{" +
@@ -81,6 +82,10 @@ public class MusicDto implements Serializable {
 
     public void setPlayTime(int time){
         this.playTime = time;
+    }
+
+    public void setImage(byte[] image){
+        this.image = image;
     }
 
     public String jsonBinder() {

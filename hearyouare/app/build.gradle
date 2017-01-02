@@ -17,7 +17,7 @@ android {
         maven { url 'http://repo1.maven.org/maven2' }
     }
     defaultConfig {
-        applicationId "com.example.dsm_025.hearyouare"
+//        applicationId "com.example.dsm_025.hearyouare"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
@@ -43,5 +43,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'gun0912.ted:tedpermission:1.0.2'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
 }
 

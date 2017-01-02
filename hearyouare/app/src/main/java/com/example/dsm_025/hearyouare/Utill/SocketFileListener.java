@@ -36,6 +36,9 @@ public class SocketFileListener extends Thread {
     @Override
     public void run(){
         super.run();
+
+
+
         try{
             String receivedmsg;
             SocketManager.sendFile(file);

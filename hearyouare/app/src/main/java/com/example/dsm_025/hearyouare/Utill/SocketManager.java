@@ -13,7 +13,7 @@ import java.net.Socket;
 
 public class SocketManager {
     public final static String HOST = "10.42.0.139";
-    public static int PORT = 8801;
+    public static int PORT = 8805;
 
     private static Socket socket;
     private String message;
@@ -49,7 +49,7 @@ public class SocketManager {
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
         while(file != null) {
-            getSocket().getOutputStream().write(file, 0, file.length);
+            getSocket().getOutputStream().write(file);
             getSocket().getOutputStream().flush();
         }
     }

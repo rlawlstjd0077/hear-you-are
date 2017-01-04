@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.dsm_025.hearyouare.Manager.DBHelper;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
 import com.example.dsm_025.hearyouare.R;
 
 /**
@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
-        final DBHelper dbHelper = new DBHelper(getContext(),"userinfo.db",null,1);
+        final DatabaseManager dbHelper = new DatabaseManager(getContext());
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         switch (item.getItemId()){
             case R.id.menu_search:
@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = input.getText().toString();
                         value.toString();
-                        dbHelper.updateNickName(value);
+//                        dbHelper.updateNickName(value);
                         Toast.makeText(getContext(), "닉네임 : " + dbHelper.selectNickName(), Toast.LENGTH_SHORT).show();
                     }
                 });

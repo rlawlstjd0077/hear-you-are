@@ -33,6 +33,7 @@ public class DatabaseManager {
 
     public DatabaseManager(Context context) {
         mContext = context;
+        create();
     }
 
     private class DBHelper extends SQLiteOpenHelper {
@@ -107,7 +108,7 @@ public class DatabaseManager {
     public int selectLastMusicID() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT " + MUSIC_ID +" FROM " + MUSIC_TABLE + ";";
-        int id;
+        int id = 0;
         Cursor cursor = db.rawQuery(sql, null);
         if(cursor != null){
             if(cursor.moveToLast()){

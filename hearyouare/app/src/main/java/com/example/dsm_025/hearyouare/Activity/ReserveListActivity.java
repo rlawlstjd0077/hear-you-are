@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,12 +14,18 @@ import android.widget.ListView;
 
 import com.example.dsm_025.hearyouare.Component.MyRecyclerView;
 import com.example.dsm_025.hearyouare.Data.MusicDto;
+import com.example.dsm_025.hearyouare.Manager.JsonManager;
 import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.Utill.SocketListener;
 import com.example.dsm_025.hearyouare.Utill.SocketManager;
 
+import org.json.JSONException;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -34,6 +39,10 @@ public class ReserveListActivity extends AppCompatActivity{
     private SocketListener sl;
     private Context mContext;
     private MyRecyclerView recyclerView;
+    private InputStream im;
+    private BufferedReader br;
+    private String firstData = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,5 +75,63 @@ public class ReserveListActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+
     }
+    Thread thread
+    Thread firstThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                while(true){
+                    SocketManager.sendMsg("FIRSTREQ");
+                    im = SocketManager.getSocket().getInputStream();
+                    br = new BufferedReader(new InputStreamReader(im));
+                    char[] str = new char[1024];
+                    br.read(str);
+                    firstData.concat(String.valueOf(str));
+                    if(firstData.equals(""))
+                        break;
+                    try {
+                        list = JsonManager.jsonParser(firstData);
+                    } catch (JSONException e) {
+                        continue;
+                    }
+                    break;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    });
+
+    public void showResult(){
+        if(firstData.equals("")){
+            //데이터가 없을 때 예약 리스트가 비었을 때
+
+        }else{
+
+        }
+    }
+
+    Thread firstReqAlbumThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while(true){
+                try {
+                    SocketManager.sendMsg("");
+                    im = SocketManager.getSocket().getInputStream();
+                    byte[] data =  new byte[1024];
+                    im.read(data);
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    });
 }

@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,7 +63,8 @@ public class MusicListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_list);
         mContext = getApplicationContext();
-
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("예약 목록");
         try {
             sl = new SocketListener(mContext, mainHandler);
             sf = new SocketFileListener(mContext, mainHandler);
@@ -72,7 +74,7 @@ public class MusicListActivity extends ActionBarActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(UserMusicData.userMusicList.isEmpty()){
+        if(UserMusicData.userMusicList == null){
             getMusicList();
             UserMusicData.userMusicList = list;
         }else{

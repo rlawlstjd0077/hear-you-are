@@ -11,12 +11,11 @@ import android.view.Menu;
 import android.widget.Toast;
 
 
-import com.example.dsm_025.hearyouare.Manager.DBHelper;
 import com.example.dsm_025.hearyouare.Fragment.MainFragment;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
 import com.example.dsm_025.hearyouare.NavigationDrawerCallbacks;
 import com.example.dsm_025.hearyouare.Fragment.NavigationDrawerFragment;
 import com.example.dsm_025.hearyouare.Fragment.ProfileFragment;
-import com.example.dsm_025.hearyouare.NicknameActivity;
 import com.example.dsm_025.hearyouare.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -40,7 +39,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         setSupportActionBar(mToolbar);
 
         deleteDatabase("userinfo.db");
-        DBHelper dbHelper = new DBHelper(getApplicationContext(),"userinfo.db",null,1);
+        DatabaseManager dbHelper = new DatabaseManager(getApplicationContext());
 
         SharedPreferences preference = getSharedPreferences("a",MODE_PRIVATE);
         int firstviewshow = preference.getInt("First",0);
@@ -95,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        final DBHelper dbHelper = new DBHelper(getApplicationContext(),"userinfo.db",null,1);
+        final DatabaseManager dbHelper = new DatabaseManager(getApplicationContext());
         super.onActivityResult(requestCode,resultCode,data);
         if(resultCode != RESULT_OK){
             Toast.makeText(MainActivity.this,"결과가 성공이 아님",Toast.LENGTH_SHORT).show();

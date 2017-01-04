@@ -41,7 +41,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/text1"
-                        android:text="Name : "
+                        android:text="NickName : KimJS"
                         android:textSize="18sp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="6dp"
@@ -72,11 +72,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/text2"
-                        android:text="Play : "
+                        android:text="Play : 23"
                         android:textSize="18sp"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="16dp"
-                        />
+                        android:layout_marginLeft="16dp" />
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -102,10 +102,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/text3"
-                        android:text="Like : "
+                        android:text="Like : 50"
                         android:textSize="18sp"
                         android:layout_marginStart="16dp"
-
                         />
                     </RelativeLayout>
                 </LinearLayout>

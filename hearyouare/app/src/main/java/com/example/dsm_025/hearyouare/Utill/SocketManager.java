@@ -17,8 +17,8 @@ public class SocketManager {
 
     private static Socket socket;
     private String message;
-    private InputStream in;
-    private BufferedReader br;
+    private static InputStream im;
+    private static BufferedReader br;
 
     public static Socket getSocket() throws IOException, InterruptedException {
         if(socket == null)
@@ -43,6 +43,11 @@ public class SocketManager {
     public static void closeSocket()throws IOException{
         if(socket!=null)
             socket.close();
+    }
+    public static String receiveMsg() throws IOException, InterruptedException {
+        im = SocketManager.getSocket().getInputStream();
+        br = new BufferedReader(new InputStreamReader(im));
+        return br.readLine();
     }
     public static void sendMsg(String msg) throws IOException, InterruptedException {
         getSocket().getOutputStream().write((msg + "\n").getBytes());

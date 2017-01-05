@@ -50,28 +50,28 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("onClick: ", "clicked");
                 WifiManager wifiManager = (WifiManager)getContext().getSystemService(getContext().WIFI_SERVICE);
-//                if(wifiManager.isWifiEnabled()) {
-//                    Connector connector = new Connector(getContext());
-//                    try {
-//                        sl = new SocketListener(getActivity(), mainHandler);
-//                        connector.execute().get();
-//                    } catch (IOException e) {
-//                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
-//
-//                    Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
-//                    startActivity(intent);
-//                }else{
-//                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
-//                }
-                Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
-                startActivity(intent);
+                if(wifiManager.isWifiEnabled()) {
+                    Connector connector = new Connector(getContext());
+                    try {
+                        sl = new SocketListener(getContext(), mainHandler);
+                        connector.execute().get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        Toast.makeText(getContext(), "연결에 실패 하였습니다.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getContext(), "연결에 성공했습니다",Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+//                Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+//                startActivity(intent);
             }
         });
         return v;
@@ -83,11 +83,11 @@ public class MainFragment extends Fragment {
             mContext = context;
         }
         protected void onPreExecute() {
-            mDlg = new ProgressDialog(mContext);
-            mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mDlg.setMessage("연결 중입니다");
-            mDlg.show();
-            super.onPreExecute();
+//            mDlg = new ProgressDialog(mContext);
+//            mDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//            mDlg.setMessage("연결 중입니다");
+//            mDlg.show();
+//            super.onPreExecute();
         }
 
         @Override
@@ -110,7 +110,6 @@ public class MainFragment extends Fragment {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             WifiManager mng = (WifiManager) mContext.getSystemService(Context.WIFI_SERVICE);
             WifiInfo info = mng.getConnectionInfo();
             String mac = info.getMacAddress();
@@ -127,7 +126,7 @@ public class MainFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mDlg.dismiss();
+//            mDlg.dismiss();
             super.onPostExecute(aVoid);
         }
     }

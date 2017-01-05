@@ -97,7 +97,7 @@ public class DatabaseManager {
                     musicDto.setArtist(cursor.getString(cursor.getColumnIndex(ARTIST)));
                     musicDto.setAlbum(cursor.getString(cursor.getColumnIndex(ALBUM)));
                     musicDto.setPlayTime(cursor.getInt(cursor.getColumnIndex(PLAY_TIME)));
-                    musicDto.setImage(cursor.getBlob(cursor.getColumnIndex(IMAGE)));
+                    musicDto.setImage(cursor.getString(cursor.getColumnIndex(IMAGE)));
                     musicList.add(musicDto);
                 }
             }

@@ -125,7 +125,7 @@ public class MusicListActivity extends ActionBarActivity {
             musicDto.setAlbumId(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
             musicDto.setTitle(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)));
             musicDto.setArtist(cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)));
-            musicDto.setPlayTime(MediaPlayer.create(mContext, Uri.parse(musicDto.getPath())).getDuration());
+//            musicDto.setPlayTime(MediaPlayer.create(mContext, Uri.parse(musicDto.getPath())).getDuration());
             list.add(musicDto);
         }
         cursor.close();
@@ -157,8 +157,8 @@ public class MusicListActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mDlg.dismiss();
-            super.onPostExecute(aVoid);
+//            mDlg.dismiss();
+//            super.onPostExecute(aVoid);
         }
 
         protected Void doInBackground(Void... voids) {
@@ -186,7 +186,6 @@ public class MusicListActivity extends ActionBarActivity {
                 byte[] copyarray;
 
                 try {
-
                     int i = 0;
                     int count = 1024;
                     copyarray = new byte[1024];

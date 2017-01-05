@@ -13,7 +13,7 @@ import java.net.Socket;
 
 public class SocketManager {
     public final static String HOST = "10.42.0.139";
-    public static int PORT = 8805;
+    public static int PORT = 8803;
 
     private static Socket socket;
     private String message;

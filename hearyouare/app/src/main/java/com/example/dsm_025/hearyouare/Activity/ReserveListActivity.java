@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.InterpolatorRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by dsm_025 on 2016-12-22.
@@ -46,6 +48,8 @@ public class ReserveListActivity extends AppCompatActivity{
     private BufferedReader br;
     private String firstData = "";
     private DatabaseManager databaseManager;
+    private boolean reqState;
+    private MusicDto currentPlayintInfo;
 
 
     @Override
@@ -67,15 +71,21 @@ public class ReserveListActivity extends AppCompatActivity{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                while(reqState){
+                    //progreebar 띄워준다.
+                }
                 Intent intent = new Intent(ReserveListActivity.this, MusicListActivity.class);
                 startActivity(intent);
             }
         });
-        JsonRequestThread firstReq = new JsonRequestThread("");   //FirstReq
+        JsonRequestThread firstReq = new JsonRequestThread("/FIRST_REQ:");   //FirstReq
+        reqState = false;
         firstReq.run();
         try {
             firstReq.join();
             list = firstReq.getList();
+            currentPlayintInfo = list.get(0);
+            list.remove(0);
             AlbumRequestThread albumRequest = new AlbumRequestThread(list);
             albumRequest.start();
             albumRequest.join();
@@ -89,8 +99,21 @@ public class ReserveListActivity extends AppCompatActivity{
     public void showResult(){
         if(firstData.equals("")){
             //데이터가 없을 때 예약 리스트가 비었을 때
-
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //ckeckconn 생성
         }else{
+            TimmerThread timmerThread = new TimmerThread(list, currentPlayintInfo.getPlayTime());
+            timmerThread.start();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //ckeckconn 생성
             //먼저 뿌려 주고 DB에 넣는다
         }
     }
@@ -129,4 +152,42 @@ public class ReserveListActivity extends AppCompatActivity{
             }
         }
     });
+    class TimmerThread extends Thread{
+        private ArrayList<Integer> list;
+        private int currentTime;
+        private int totalTime = 0;
+
+        public TimmerThread(ArrayList<MusicDto> musicDtos, int spent){
+            list = new ArrayList<>();
+            for(MusicDto temp : musicDtos){
+                int time = temp.getPlayTime();
+                list.add(time);
+                totalTime += time;
+            }
+            currentTime = spent;
+        }
+        public void addList(ArrayList<MusicDto> musicDtos){
+            ArrayList<Integer> tempList = new ArrayList<>();
+            for(MusicDto temp : musicDtos){
+                int time = temp.getPlayTime();
+                list.add(time);
+                totalTime += time;
+            }
+        }
+        @Override
+        public void run() {
+            for(int i = 0; i < list.size(); i++){
+                while(list.get(i) == currentTime){
+                    try {
+                        currentTime++;
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                currentTime = 0;
+                //노래 하나가 끝남.
+            }
+        }
+    }
 }

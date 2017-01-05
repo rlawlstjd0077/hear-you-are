@@ -15,10 +15,17 @@ import java.util.ArrayList;
 public class JsonManager {
     public static ArrayList<MusicDto> jsonParser(String jsonData) throws JSONException {
         MusicDto musicDto = new MusicDto();
+        JSONObject jsonResponse = new JSONObject(jsonData);
+        JSONArray musicDatas = jsonResponse.getJSONArray("music_list");
+        JSONArray playingData = jsonResponse.getJSONArray("playing_music");
         ArrayList<MusicDto> arrayList = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray(jsonData);
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject object = (JSONObject) jsonArray.get(i);
+        JSONObject object = (JSONObject) playingData.get(0);
+        musicDto.setId(object.getInt("id"));
+        musicDto.setPlayTime(object.getInt("playtime"));
+        arrayList.add(musicDto);
+
+        for (int i = 0; i < musicDatas.length(); i++) {
+            object = (JSONObject) musicDatas.get(i);
             musicDto.setId(object.getInt("id"));
             musicDto.setTitle(object.get("song").toString());
             musicDto.setAlbum(object.get("album").toString());

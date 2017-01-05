@@ -17,7 +17,7 @@ public class MusicDto implements Serializable {
     private String path;
     private String album;
     private int playTime;
-    private byte[] image;
+    private String imagePath;
 
     public MusicDto() {
     }
@@ -50,8 +50,8 @@ public class MusicDto implements Serializable {
 
     public int getPlayTime(){return playTime;}
 
-    public byte[] getImage(){
-        return this.image;
+    public String getImage(){
+        return this.imagePath;
     }
 
     @Override
@@ -84,8 +84,8 @@ public class MusicDto implements Serializable {
         this.playTime = time;
     }
 
-    public void setImage(byte[] image){
-        this.image = image;
+    public void setImage(String path){
+        this.imagePath = path;
     }
 
     public String jsonBinder() {

@@ -19,6 +19,7 @@ public class JsonManager {
         JSONArray jsonArray = new JSONArray(jsonData);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject object = (JSONObject) jsonArray.get(i);
+            musicDto.setId(object.getInt("id"));
             musicDto.setTitle(object.get("song").toString());
             musicDto.setAlbum(object.get("album").toString());
             musicDto.setArtist(object.get("artist").toString());

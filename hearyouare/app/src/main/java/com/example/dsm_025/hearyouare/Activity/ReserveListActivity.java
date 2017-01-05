@@ -14,8 +14,11 @@ import android.widget.ListView;
 
 import com.example.dsm_025.hearyouare.Component.MyRecyclerView;
 import com.example.dsm_025.hearyouare.Data.MusicDto;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
 import com.example.dsm_025.hearyouare.Manager.JsonManager;
 import com.example.dsm_025.hearyouare.R;
+import com.example.dsm_025.hearyouare.Utill.AlbumRequestThread;
+import com.example.dsm_025.hearyouare.Utill.JsonRequestThread;
 import com.example.dsm_025.hearyouare.Utill.SocketListener;
 import com.example.dsm_025.hearyouare.Utill.SocketManager;
 
@@ -42,6 +45,7 @@ public class ReserveListActivity extends AppCompatActivity{
     private InputStream im;
     private BufferedReader br;
     private String firstData = "";
+    private DatabaseManager databaseManager;
 
 
     @Override
@@ -49,7 +53,7 @@ public class ReserveListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_list);
         mContext = getApplicationContext();
-
+        databaseManager = new DatabaseManager(mContext);
         recyclerView = (MyRecyclerView) findViewById(R.id.recyclerview_reserve);
         recyclerView.setHasFixedSize(true);
 
@@ -59,14 +63,6 @@ public class ReserveListActivity extends AppCompatActivity{
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(mContext, 1));
 
-        try {
-            sl = new SocketListener(this, mainHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,59 +71,58 @@ public class ReserveListActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-
-    }
-    Thread thread
-    Thread firstThread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                while(true){
-                    SocketManager.sendMsg("FIRSTREQ");
-                    im = SocketManager.getSocket().getInputStream();
-                    br = new BufferedReader(new InputStreamReader(im));
-                    char[] str = new char[1024];
-                    br.read(str);
-                    firstData.concat(String.valueOf(str));
-                    if(firstData.equals(""))
-                        break;
-                    try {
-                        list = JsonManager.jsonParser(firstData);
-                    } catch (JSONException e) {
-                        continue;
-                    }
-                    break;
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        JsonRequestThread firstReq = new JsonRequestThread("");   //FirstReq
+        firstReq.run();
+        try {
+            firstReq.join();
+            list = firstReq.getList();
+            AlbumRequestThread albumRequest = new AlbumRequestThread(list);
+            albumRequest.start();
+            albumRequest.join();
+            list = albumRequest.getList();
+            showResult();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    });
+    }
 
     public void showResult(){
         if(firstData.equals("")){
             //데이터가 없을 때 예약 리스트가 비었을 때
 
         }else{
-
+            //먼저 뿌려 주고 DB에 넣는다
         }
     }
 
-    Thread firstReqAlbumThread = new Thread(new Runnable() {
+    Thread checkConn = new Thread(new Runnable() {
         @Override
         public void run() {
-            while(true){
+            while (true) {
+                JsonRequestThread jsonRequestThread = new JsonRequestThread("");
+                //마지막 ID 구해서 넣어준다.
+                jsonRequestThread.start();
                 try {
-                    SocketManager.sendMsg("");
-                    im = SocketManager.getSocket().getInputStream();
-                    byte[] data =  new byte[1024];
-                    im.read(data);
-                    
-                } catch (IOException e) {
+                    jsonRequestThread.join();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+                ArrayList<MusicDto> checkList = jsonRequestThread.getList();
+                if(checkList != null) {
+                    AlbumRequestThread albumReqThread = new AlbumRequestThread(checkList);
+                    albumReqThread.start();
+                    try {
+                        albumReqThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    list.addAll(albumReqThread.getList());
+                    //뿌려주고 DB에 넣어준다.
+                } else {
+                    //변한게 없다.
+                }
+                try {
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

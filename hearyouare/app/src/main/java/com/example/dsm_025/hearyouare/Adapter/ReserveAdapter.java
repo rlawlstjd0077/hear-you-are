@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.example.dsm_025.hearyouare.Data.MusicDto;
 import com.example.dsm_025.hearyouare.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dsm_025 on 2016-12-25.
@@ -40,13 +42,18 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
 
         holder.mSongTV.setText(list.get(position).getTitle());
         holder.mArtistAlbumTV.setText(list.get(position).getArtist() + " | " +list.get(position).getAlbum());
-
+        //imageView 초기화 필요
         hClickLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -64,6 +71,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
         public final RelativeLayout mClickLayout;
         public final TextView mSongTV;
         public final TextView mArtistAlbumTV;
+        public final ImageView mAlbumImageIV;
 
 
         public ViewHolder(View itemView) {
@@ -72,6 +80,8 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
             mClickLayout = (RelativeLayout) itemView.findViewById(R.id.layout_wifi_click);
             mSongTV = (TextView) itemView.findViewById(R.id.tv_ssid);
             mArtistAlbumTV = (TextView) itemView.findViewById(R.id.tv_level);
+            mAlbumImageIV = (ImageView) itemView.findViewById(R.id.iv_album);
         }
     }
+
 }

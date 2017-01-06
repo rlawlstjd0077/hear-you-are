@@ -142,12 +142,12 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
                 }
                 return b;
             } catch (FileNotFoundException e) {
-            } finally {
-                try {
-                    if (fd != null)
-                        fd.close();
-                } catch (IOException e) {
-                }
+                } finally {
+                    try {
+                        if (fd != null)
+                            fd.close();
+                    } catch (IOException e) {
+                    }
             }
         }
         return null;

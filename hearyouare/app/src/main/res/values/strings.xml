@@ -7,4 +7,5 @@
     <string name="action_progress_wifi">wifi를 검색중입니다....</string>
     <string name="action_progress_reserve">노래를 받아오고 있습니다....</string>
     <string name="dialog_input_wifi">비밀번호를 입력해주세요.</string>
+    <string name="reserve_list_null">노래를 예약해보세요!</string>
 </resources>

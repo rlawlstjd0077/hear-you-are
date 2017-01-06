@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dsm_025.hearyouare.Adapter.ScanAdapter;
 import com.example.dsm_025.hearyouare.Adapter.WifiAdapter;
 import com.example.dsm_025.hearyouare.Component.MyRecyclerView;
 import com.example.dsm_025.hearyouare.R;
@@ -55,7 +54,7 @@ public class WifiListFragment extends Fragment{
         recyclerView = (MyRecyclerView) v.findViewById(R.id.recyclerview_wifi);
         recyclerView.setHasFixedSize(true);
 
-        View emptyView = v.findViewById(R.id.view_action_progress);
+        View emptyView = v.findViewById(R.id.view_req_list);
         recyclerView.setEmptyView(emptyView);
 
         recyclerView.setAdapter(mAdapter);

@@ -81,11 +81,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         new TedPermission(this)
                 .setPermissionListener(permissionListener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                .check();
-        new TedPermission(this)
-                .setPermissionListener(permissionListener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.READ_PHONE_STATE)
                 .check();
 

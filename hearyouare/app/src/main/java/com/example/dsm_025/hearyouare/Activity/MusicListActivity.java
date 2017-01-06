@@ -64,7 +64,7 @@ public class MusicListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_music_list);
         mContext = getApplicationContext();
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("예약 목록");
+        toolbar.setTitle("음악 목록");
         try {
             sl = new SocketListener(mContext, mainHandler);
             sf = new SocketFileListener(mContext, mainHandler);

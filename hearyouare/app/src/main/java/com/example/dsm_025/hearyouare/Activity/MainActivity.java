@@ -1,23 +1,17 @@
 package com.example.dsm_025.hearyouare.Activity;
 
-
 import android.Manifest;
-
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.widget.Toast;
-
 
 import com.example.dsm_025.hearyouare.Fragment.MainFragment;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
 import com.example.dsm_025.hearyouare.NavigationDrawerCallbacks;
 import com.example.dsm_025.hearyouare.Fragment.NavigationDrawerFragment;
 import com.example.dsm_025.hearyouare.Fragment.ProfileFragment;
@@ -25,6 +19,8 @@ import com.example.dsm_025.hearyouare.NicknameActivity;
 import com.example.dsm_025.hearyouare.R;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 
@@ -35,22 +31,39 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private NavigationDrawerFragment mNavigationDrawerFragment;
     MainFragment mainFragment;
     ProfileFragment profileFragment;
+    private DatabaseManager DB;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            updateNickNameNav();
+        }
+    }
+
+    public void updateNickNameNav() {
+        mNavigationDrawerFragment.updateNickname(DB.selectNickName());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DB = new DatabaseManager(getApplicationContext());
+        Typekit.getInstance()
+                .addNormal(Typekit.createFromAsset(this, "Hero.otf"));
         setContentView(R.layout.activity_main_topdrawer);
+
+
         mToolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
-
+        deleteDatabase("hya.db");
         SharedPreferences preference = getSharedPreferences("a",MODE_PRIVATE);
         int firstviewshow = preference.getInt("First",0);
         if (firstviewshow != 1){
             Intent intent = new Intent(MainActivity.this,NicknameActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         mNavigationDrawerFragment.closeDrawer();
@@ -65,13 +78,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         PermissionListener permissionListener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
 
         };
@@ -91,6 +101,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 .setPermissions(Manifest.permission.READ_PHONE_STATE)
                 .check();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -99,7 +110,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
         switch (position) {
             case 0:
                 getSupportFragmentManager()
@@ -114,6 +124,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         .commit();
                 break;
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
     @Override

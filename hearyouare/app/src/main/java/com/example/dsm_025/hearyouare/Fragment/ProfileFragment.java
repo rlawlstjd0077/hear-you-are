@@ -1,12 +1,13 @@
 package com.example.dsm_025.hearyouare.Fragment;
 
-import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,15 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dsm_025.hearyouare.Data.DBHelper;
+import com.example.dsm_025.hearyouare.Activity.MainActivity;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
+import com.example.dsm_025.hearyouare.NicknameActivity;
 import com.example.dsm_025.hearyouare.R;
+import com.example.dsm_025.hearyouare.Utill.Utill;
+import com.sdsmdg.tastytoast.TastyToast;
 
-import static android.support.v4.app.ActivityCompat.invalidateOptionsMenu;
 import static com.example.dsm_025.hearyouare.R.menu.profile_menu;
 
 /**
@@ -39,23 +41,21 @@ public class ProfileFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final DBHelper dbHelper = new DBHelper(getContext(),"userinfo.db",null,1);
+        final DatabaseManager DB = new DatabaseManager(getContext());
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        Utill.setGlobalFont(getActivity(), v);
         setHasOptionsMenu(true);
         TextView textview;
         textview = (TextView) v.findViewById(R.id.text1);
-        textview.setText("NickName : "+dbHelper.selectNickName()+"");
-        TextView textview2;
-        textview2 = (TextView) v.findViewById(R.id.text2);
-        textview2.setText("PlayCount : "+dbHelper.selectPlayCount()+"");
+        textview.setText("NickName : " + DB.selectNickName() + "");
+        TextView textvieww;
+        textvieww = (TextView) v.findViewById(R.id.text2);
+        textvieww.setText("PlayCount : " + DB.selectPlayCount() + "");
         return v;
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -63,13 +63,13 @@ public class ProfileFragment extends Fragment {
         MenuItem Mitem  = menu.findItem(R.id.menu_search);
         Mitem.setVisible(false);
     }
-
     public boolean onOptionsItemSelected(MenuItem item){
-        final DBHelper dbHelper = new DBHelper(getContext(),"userinfo.db",null,1);
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+       final DatabaseManager DB = new DatabaseManager(getContext());
         switch (item.getItemId()){
             case R.id.profile_edit:
-                //Intent intent = new Intent(ProfileFragment.this.getActivity(), NicknameActivity.class);
-                //startActivity(intent);
                 final EditText editText = new EditText(getActivity());
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                 dialog.setTitle("닉네임 재설정");
@@ -79,8 +79,16 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String value = editText.getText().toString()+"";
-                        dbHelper.updateNickName(value);
-                        Toast.makeText(getContext(), "닉네임 : " + dbHelper.selectNickName(), Toast.LENGTH_SHORT).show();
+                        DB.updateNickName("update userinfo set nickname = '"+value+"';");
+                        TastyToast.makeText(getContext(), "닉네임 : " + DB.selectNickName(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+                        ((MainActivity)getActivity()).updateNickNameNav();
+//                        Fragment frg = null;
+//                        frg = getFragmentManager().findFragmentByTag("Your_Fragment_TAG");
+//                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                        ft.detach(frg);
+//                        ft.attach(frg);
+//                        ft.commit();
+
                     }
                 });
                 dialog.setNegativeButton("취소", new DialogInterface.OnClickListener(){
@@ -92,7 +100,11 @@ public class ProfileFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+//        Fragment newFragment = new ProfileFragment();
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.replace(R.id.text1, newFragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
         return true;
     }
-
 }

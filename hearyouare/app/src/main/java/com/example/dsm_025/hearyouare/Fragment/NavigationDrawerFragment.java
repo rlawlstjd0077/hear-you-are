@@ -5,8 +5,10 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,12 +18,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.dsm_025.hearyouare.Adapter.NavigationDrawerAdapter;
+import com.example.dsm_025.hearyouare.Manager.DatabaseManager;
 import com.example.dsm_025.hearyouare.NavigationDrawerCallbacks;
 import com.example.dsm_025.hearyouare.NavigationItem;
 import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.ScrimInsetsFrameLayout;
+import com.example.dsm_025.hearyouare.Utill.Utill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +44,26 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private boolean mUserLearnedDrawer;
     private boolean mFromSavedInstanceState;
     private int mCurrentSelectedPosition;
+    private TextView textview;
+    private DatabaseManager dbManager;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
+        if (savedInstanceState != null) {
+            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            mFromSavedInstanceState = true;
+        }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        dbManager = new DatabaseManager(getContext());
         View view = inflater.inflate(R.layout.fragment_navigation_google, container, false);
+        Utill.setGlobalFont(getActivity(), view);
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -56,17 +75,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         adapter.setNavigationDrawerCallbacks(this);
         mDrawerList.setAdapter(adapter);
         selectItem(mCurrentSelectedPosition);
-        return view;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
-        if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            mFromSavedInstanceState = true;
-        }
+        textview = (TextView) view.findViewById(R.id.txtUsername);
+        textview.setText(dbManager.selectNickName());
+        return view;
     }
 
     @Override
@@ -85,6 +97,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     public void setActionBarDrawerToggle(ActionBarDrawerToggle actionBarDrawerToggle) {
         mActionBarDrawerToggle = actionBarDrawerToggle;
+    }
+
+    public void updateNickname(String name){
+        textview.setText(name);
     }
 
     public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {

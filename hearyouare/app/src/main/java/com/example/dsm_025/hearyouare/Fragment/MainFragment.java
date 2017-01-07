@@ -3,6 +3,8 @@ package com.example.dsm_025.hearyouare.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -10,21 +12,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import android.widget.Toolbar;
 import com.example.dsm_025.hearyouare.Activity.ReserveListActivity;
 import com.example.dsm_025.hearyouare.R;
 import com.example.dsm_025.hearyouare.Utill.SocketListener;
 import com.example.dsm_025.hearyouare.Utill.SocketManager;
+import com.example.dsm_025.hearyouare.Utill.Utill;
+import com.tsengvn.typekit.Typekit;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutionException;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by 10102김동규 on 2016-11-25.
@@ -33,9 +42,12 @@ public class MainFragment extends Fragment {
     private Context mContent;
     private Handler mainHandler;
     private SocketListener sl;
+    private Toolbar mToolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -43,6 +55,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_main, container, false);
         mContent = v.getContext();
+        Utill.setGlobalFont(getActivity(), v);
         ImageView iv;
         iv = (ImageView)v.findViewById(R.id.speaker);
         iv.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +83,18 @@ public class MainFragment extends Fragment {
 //                }else{
 //                    Toast.makeText(getContext(), "Wifi가 꺼져 있습니다.", Toast.LENGTH_SHORT).show();
 //                }
-                Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
-                startActivity(intent);
+//                SharedPreferences preference = getSharedElementEnterTransition("a",MODE_PRIVATE);
+//                int firstviewshow = preference.getInt("First",0);
+//                if (firstviewshow != 1){
+//                    Intent intent = new Intent(MainFragment.this.getActivity(),ConnectWifiFragment.class);
+//                    startActivity(intent);
+//                }
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container, new ConnectWifiFragment());
+                fragmentTransaction.commit();
+//                Intent intent = new Intent(MainFragment.this.getActivity(), ReserveListActivity.class);
+//                startActivity(intent);
             }
         });
         return v;
@@ -131,4 +154,5 @@ public class MainFragment extends Fragment {
             super.onPostExecute(aVoid);
         }
     }
+
 }

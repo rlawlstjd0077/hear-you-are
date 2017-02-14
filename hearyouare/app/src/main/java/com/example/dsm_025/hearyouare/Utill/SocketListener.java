@@ -41,7 +41,7 @@ public class SocketListener extends Thread {
             String receivedmsg;
             SocketManager.sendMsg(this.msg);
             receivedmsg = br.readLine();
-            Log.e("SocketListener", receivedmsg);
+            Log.e("SocketListener", "" + receivedmsg);
             Message msg = Message.obtain(mHandler, 0 ,0, 0, receivedmsg);
         } catch (InterruptedException e) {
             e.printStackTrace();

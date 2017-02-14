@@ -112,7 +112,6 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
             try {
                 fd = res.openFileDescriptor(uri, "r");
 
-
                 // Compute the closest power-of-two scale factor
                 // and pass that to sBitmapOptionsCache.inSampleSize, which will
                 // result in faster decoding and better quality
@@ -130,8 +129,6 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
                 options.inJustDecodeBounds = false;
                 options.inSampleSize = scale;
 
-
-
                 Bitmap b = BitmapFactory.decodeFileDescriptor(
                         fd.getFileDescriptor(), null, options);
 
@@ -143,18 +140,16 @@ public class MusicDataAdapter extends RecyclerView.Adapter<MusicDataAdapter.View
                         b = tmp;
                     }
                 }
-
                 return b;
             } catch (FileNotFoundException e) {
-            } finally {
-                try {
-                    if (fd != null)
-                        fd.close();
-                } catch (IOException e) {
-                }
+                } finally {
+                    try {
+                        if (fd != null)
+                            fd.close();
+                    } catch (IOException e) {
+                    }
             }
         }
         return null;
     }
-
 }

@@ -48,10 +48,12 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'gun0912.ted:tedpermission:1.0.2'
     compile 'com.android.support:design:25.1.0'
     compile 'com.tsengvn:Typekit:1.0.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
 }
 

@@ -30,4 +30,8 @@
         android:layout_marginLeft="200px"
         android:layout_marginTop="50px"
         android:layout_below="@+id/arrow"/>
+=======
+        android:background="@drawable/speaker"
+        />
+>>>>>>> wifi-scanning
 </RelativeLayout>

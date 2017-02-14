@@ -13,12 +13,12 @@ import java.net.Socket;
 
 public class SocketManager {
     public final static String HOST = "10.42.0.139";
-    public static int PORT = 8801;
+    public static int PORT = 8803;
 
     private static Socket socket;
     private String message;
-    private InputStream in;
-    private BufferedReader br;
+    private static InputStream im;
+    private static BufferedReader br;
 
     public static Socket getSocket() throws IOException, InterruptedException {
         if(socket == null)
@@ -44,12 +44,17 @@ public class SocketManager {
         if(socket!=null)
             socket.close();
     }
+    public static String receiveMsg() throws IOException, InterruptedException {
+        im = SocketManager.getSocket().getInputStream();
+        br = new BufferedReader(new InputStreamReader(im));
+        return br.readLine();
+    }
     public static void sendMsg(String msg) throws IOException, InterruptedException {
         getSocket().getOutputStream().write((msg + "\n").getBytes());
     }
     public static void sendFile(byte[] file) throws IOException, InterruptedException {
         while(file != null) {
-            getSocket().getOutputStream().write(file, 0, file.length);
+            getSocket().getOutputStream().write(file);
             getSocket().getOutputStream().flush();
         }
     }

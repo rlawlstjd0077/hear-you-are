@@ -7,4 +7,5 @@
     android:orderInCategory="1"
     android:title="Menu item"
     app:showAsAction="never"/>
+
 </menu>

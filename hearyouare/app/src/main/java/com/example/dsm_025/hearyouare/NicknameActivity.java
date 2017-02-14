@@ -37,7 +37,7 @@ public class NicknameActivity extends AppCompatActivity{
                 String NickName = null;
                 int Count = 0;
                 NickName = editText.getText().toString();
-                DB.insertInfo("insert into userinfo values('"+NickName+"', "+Count+");");
+                DB.insertInfo("insert into userinfo values('"+NickName+"', "+Count+");",0);
                 TastyToast.makeText(getApplicationContext(), "닉네임 : " + DB.selectNickName(), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                 setResult(1);
                 finish();

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../...iml" filepath="$PROJECT_DIR$/../...iml" />
+      <module fileurl="file://C:/Android.iml" filepath="C:/Android.iml" />
       <module fileurl="file://D:.iml" filepath="D:.iml" />
       <module fileurl="file://D:.iml" filepath="D:.iml" />
       <module fileurl="file://D:.iml" filepath="D:.iml" />
@@ -14,8 +15,10 @@
       <module fileurl="file://D:.iml" filepath="D:.iml" />
       <module fileurl="file://D:.iml" filepath="D:.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ExpandableButtonMenu/ExpandableButtonMenu.iml" filepath="$PROJECT_DIR$/../ExpandableButtonMenu/ExpandableButtonMenu.iml" />
-      <module fileurl="file://C:/androidProject.iml" filepath="C:/androidProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:/hear-you-are.iml" filepath="C:/hear-you-are.iml" />
+      <module fileurl="file://C:/hear-you-are.iml" filepath="C:/hear-you-are.iml" />
+      <module fileurl="file://C:/hear-you-are.iml" filepath="C:/hear-you-are.iml" />
       <module fileurl="file://$PROJECT_DIR$/hearyouare.iml" filepath="$PROJECT_DIR$/hearyouare.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ExpandableButtonMenu/library/library.iml" filepath="$PROJECT_DIR$/../ExpandableButtonMenu/library/library.iml" />
     </modules>
